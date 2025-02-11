@@ -1,0 +1,12 @@
+var,type
+DB010,i
+# DB020,c <- Always ES
+DB030,i
+DB040,c
+# DB040_F,i <- Always 1 (2 in 2009-2011)
+# DB060,i <- Not available from 2021
+# DB060_F,i <- Not available from 2021
+DB090,d
+# DB090_F,i <- Always 1
+DB100,i
+# DB100_F,i <- Always 1

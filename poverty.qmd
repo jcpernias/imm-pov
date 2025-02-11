@@ -1,0 +1,119 @@
+---
+title: "Evolución de la pobreza en España, 2003-2023"
+format: 
+  html:
+    toc: true
+    number-sections: true
+    embed-resources: true
+    theme: cosmo
+    df-print: paged
+---
+
+# Datos
+
+```{r}
+#| message: false
+
+library(survey)
+library(modelsummary)
+library(tidyverse)
+```
+
+Lee los datos.
+
+```{r}
+load("data/hhincome.Rdata")
+str(hhincome)
+```
+
+## Renta
+
+Construye la base de datos con la renta disponible per capita.
+
+```{r}
+hhincome <- hhincome |> 
+  mutate(inc_cu = hh_inc / hh_cunits)
+```
+
+# Indicadores
+
+## Renta disponible media
+
+Renta disponible media por unidad de consumo.
+
+```{r}
+hhincome |> 
+  group_by(ecv_year) |> 
+  summarise(ymean = 
+              weighted.mean(inc_cu, hh_weight * hh_size, na.rm = TRUE))
+```
+
+```{r}
+svy <- svydesign(ids = ~1, data = hhincome, weights = ~ hh_weight * hh_size)
+yd_mean <- svyby(~ inc_cu, ~ ecv_year, svy, svymean, na.rm = TRUE) 
+yd_mean 
+```
+
+Evolución temporal de la renta disponible media.
+
+```{r}
+yd_mean |> 
+  ggplot(aes(x = ecv_year, y = inc_cu)) +
+  geom_line(color="steelblue") +
+  geom_point() +
+  xlab("")
+```
+
+## Renta mediana y línea de la pobreza
+
+```{r}
+pov_line_table <- 
+  svyby(~ inc_cu, ~ ecv_year, svy, svyquantile, 0.5, na.rm = TRUE) |> 
+  as_tibble() |> 
+  select(-se.inc_cu) |> 
+  rename(inc_med = inc_cu) |> 
+  mutate(pov_line = 0.6 * inc_med)
+
+pov_line_table
+```
+
+Evolución temporal umbral de pobreza.
+
+```{r}
+pov_line_table |> 
+  ggplot(aes(x = ecv_year, y = pov_line)) +
+  geom_line(color="steelblue") +
+  geom_point() +
+  xlab("")
+```
+
+Población en riesgo de pobreza.
+
+```{r}
+pov_db <- hhincome |> 
+  left_join(pov_line_table, by = "ecv_year") |> 
+  mutate(pov = as.integer(inc_cu < pov_line),
+         pov_gap = pov * (pov_line - inc_cu) / pov_line,
+         pov_gap_sq = pov_gap * pov_gap)
+```
+
+```{r}
+pov_dsgn <- svydesign(ids = ~1, data = pov_db, 
+                      weights = ~ hh_weight * hh_size)
+fgt_tab <- svyby(~pov + pov_gap + pov_gap_sq,
+                 ~ecv_year, pov_dsgn, svymean, na.rm = TRUE) |> 
+  as_tibble()
+
+fgt_tab
+```
+
+```{r}
+fgt_tab |> 
+  select(-contains("se.")) |> 
+  pivot_longer(-ecv_year, names_to = "Measures") |> 
+  ggplot(aes(x = ecv_year, y = value, 
+             group = Measures)) +
+  geom_line() + geom_point() + 
+  ylab("") + xlab("") +
+  facet_wrap(~ Measures, ncol = 1, scales = "free_y")
+```
