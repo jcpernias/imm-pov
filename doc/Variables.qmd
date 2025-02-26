@@ -1,0 +1,146 @@
+---
+title: "Variables"
+format: 
+  html:
+    toc: true
+    number-sections: true
+    embed-resources: true
+    theme: cosmo
+---
+
+# Introducción
+
+Los datos de la ECV se dividen en cuatro ficheros:
+
+-   Fichero D: Datos básicos de los hogares.
+-   Fichero R: Datos básicos de las personas.
+-   Fichero H: Datos detallados de los hogares.
+-   Fichero P: Datos detallados de los adultos.
+
+La mayoría de las variables se complementan con otra variable que indica si la información completa, falta o simplemente no es aplicable en el registro en cuestión. Estos indicadores, *flags*, se nombran añadiendo el sufijo "\_F" al nombre de la variable principal (por ejemplo: **DB040_F** es el indicador de la variable DB040).
+
+# Datos básicos de los hogares
+
+El fichero D contiene información para identificar a los hogares, la Comunidad Autónoma de residencia, el grado de urbanización de la zona de residencia, el año de la encuesta y los factores de ponderación.
+
+-   **DB010**: año de la encuesta.
+-   **DB030**: número de identificación del hogar.
+-   **DB040**: Región. Posibles valores:
+    -   *ES11*: Galicia
+    -   *ES12*: Principado de Asturias
+    -   *ES13*: Cantabria
+    -   *ES21*: País Vasco
+    -   *ES22*: Comunidad Foral de Navarra
+    -   *ES23*: La Rioja
+    -   *ES24*: Aragón
+    -   *ES30*: Comunidad de Madrid
+    -   *ES41*: Castilla y León
+    -   *ES42*: Castilla-La Mancha
+    -   *ES43*: Extremadura
+    -   *ES51*: Cataluña
+    -   *ES52*: Comunidad Valenciana
+    -   *ES53*: Islas Baleares
+    -   *ES61*: Andalucía
+    -   *ES62*: Región de Murcia
+    -   *ES63*: Ciudad Autónoma de Ceuta
+    -   *ES64*: Ciudad Autónoma de Melilla
+    -   *ES70*: Canarias
+-   **DB090**: Factor transversal del hogar
+-   **DB100**: Grado de urbanización. (1: zona muy poblada; 2: zona media; 3: zona poco poblada).
+
+# Datos básicos de las personas
+
+El fichero R contiene información de las personas (adultos y menores) que forman parte de los hogares colaboradores: identificación de la persona y su hogar, factores de ponderación, información demográfica, situación de presente o ausente, situación respecto a la actividad, identificaciones de familiares, tipo de entrevista, para los niños (de 12 o menos años) número de horas que asisten al colegio, son cuidados por otras personas, etc.
+
+-   **RB010**: año de la encuesta
+-   **RB030**: identificador transversal de la persona. Se compone del identificador del hogar, **DB030**, y el número de orden, a 2 dígitos, de la persona dentro del hogar.
+-   **RB050**: factor de ponderación transversal.
+-   **RB080**: año de nacimiento (**RB010** - 86 para las personas con 85 o más años, y **RB010** - 85 a **RB010** para el resto de personas).
+-   **RB090**: sexo (1 para varones, 2 para mujeres).
+-   **RB200**: situación respecto a la residencia en el hogar (1 vive actualmente en el hogar, 2 ausente temporalmente).
+-   **RB220**: identificador del padre.
+-   **RB230**: identificador de la madre.
+-   **RB240**: identificador del cónyuge o pareja.
+-   **vrLOWJOB**: Personas en hogares sin empleo o con baja intensidad en el empleo. Son las personas que forman parte de hogares en los que sus miembros en edad de trabajar lo hicieron menos del 20% del total de su potencial de trabajo durante el año anterior al de la entrevista (periodo de referencia de los ingresos). Se calcula por una parte el número de meses en los que los miembros del hogar han estado trabajando durante el año de referencia y, por otra parte, el total de meses en los que teóricamente esos mismos miembros podrían haber trabajado. Se calcula el ratio y se determina si es inferior a 20%. Esta variable no se aplica en el caso de las personas de 60 y más años.
+-   **vrEU2020**: Personas en riesgo de pobreza o exclusión social (estrategia Europa 2020). Son los que están en alguna de estas situaciones: a) en riesgo de pobreza (60% mediana de los ingresos por unidad de consumo); b) en carencia material severa (con carencia en al menos 4 conceptos de una lista de 9); c) en hogares sin empleo o con baja intensidad en el empleo (hogares en los que sus miembros en edad de trabajar lo hicieron menos del 20% del total de su potencial de trabajo durante el año de referencia).
+
+# Datos detallados de los hogares
+
+En este fichero se puede encontrar información detallada del hogar distribuida en las siguientes secciones:
+
+-   Datos básicos del hogar (variables HB)
+-   Datos sobre la vivienda (variables HH)
+-   Datos acerca de la exclusión social (variables HS)
+-   Datos acerca de la renta (variables HY)
+
+Las variables que se han recogido son:
+
+-   **HB010**: año de la encuesta.
+-   **HB030**: identificación transversal del hogar
+-   **HY020**: renta disponible total del hogar.
+-   **HY020_F**: indicador de **HY020**. Si es igual a -1, no consta. En otro caso, el primer dígito indica si la renta es bruta o neta (0: sin renta; 1: neta; 2: bruta; 3: neta y bruta; 4: desconocida), el segundo dígito indica el método de imputación (2: imputación estadística) y los restantes dígitos (000.00000) recogen el factor de imputación (100 · valor recogido / valor registrado).
+-   **HY022**: renta disponible total del hogar antes de transferencias sociales excepto prestaciones por jubilación y supervivencia.
+-   **HY022_F**: similar a **HY020_F**.
+-   **HY023**: renta disponible total del hogar antes de transferencias sociales.
+-   **HY023_F**: similar a **HY020_F**.
+-   **HX040**: número de miembros del hogar.
+-   **HX060**: tipo de hogar. En esta clasificación se consideran niños dependientes económicamente a todos los menores de 18 años y a las personas que tienen 18 y más años pero menos de 25 y son económicamente inactivos.
+    -   1 - Una persona: hombre de menos de 30 años
+    -   2 - Una persona: hombre de entre 30 y 64 años
+    -   3 - Una persona: hombre de 65 o más años
+    -   4 - Una persona: mujer de menos de 30 años
+    -   5 - Una persona: mujer de entre 30 y 64 años
+    -   6 - Una persona: mujer de 65 o más años
+    -   7 - 2 adultos sin niños dependientes económicamente, al menos una persona de 65 o más años
+    -   8 - 2 adultos sin niños dependientes económicamente, teniendo ambos menos de 65 años
+    -   9 - Otros hogares sin niños dependientes económicamente
+    -   10 - Un adulto con al menos un niño dependiente
+    -   11 - Dos adultos con un niño dependiente
+    -   12 - Dos adultos con dos niños dependientes
+    -   13 - Dos adultos con tres o más niños dependientes
+    -   14 - Otros hogares con niños dependientes
+    -   Blanco - No consta
+-   **HX240**: unidades de consumo. Escala OCDE modificada: 1 + 0,5 · (miembros con 14 años o más - 1) + 0,3 · (**HX040** - miembros con 14 años o más).
+-   **vhRentaa**: renta disponible total del hogar (contiene las rentas percibidas de esquemas privados de pensiones). Variable utilizada en los indicadores armonizados de pobreza.
+-   **vhRentaAIa**: renta disponible total del hogar incluyendo el alquiler imputado (contiene las rentas percibidas de esquemas privados de pensiones).
+-   **vhPobreza**: 1 si hogar en riesgo de pobreza, 0 en otro caso. Umbral de pobreza: es el 60% de la mediana de los ingresos anuales, **vhRentaa**, por unidad de consumo (escala OCDE modificada), tomando la distribución de personas. Los ingresos por unidad de consumo se obtienen dividiendo los ingresos totales del hogar entre el número de unidades de consumo.
+-   **vhMATDEP**: Hogar en carencia material severa. Son los hogares con carencia en al menos cuatro conceptos de una lista de nueve. Los conceptos considerados son: 1) no puede permitirse ir de vacaciones al menos una semana al año; 2) no puede permitirse una comida de carne, pollo o pescado al menos cada dos días; 3) no puede permitirse mantener la vivienda con una temperatura adecuada; 4) no tiene capacidad para afrontar gastos imprevistos; 5) ha tenido retrasos en el pago de gastos relacionados con la vivienda principal (hipoteca o alquiler, recibos de gas, comunidad...) o en compras a plazos en los últimos 12 meses; 6) no puede permitirse disponer de un automóvil; 7) no puede permitirse disponer de teléfono; 8) no puede permitirse disponer de un televisor en color; y 9) no puede permitirse disponer de una lavadora.
+
+# Datos detallados de los adultos
+
+En este fichero se encuentra información detallada de la persona clasificada de la siguiente manera:
+
+-   Datos básicos de la persona (variables PB)
+-   Datos de educación (variables PE)
+-   Datos de salud (variables PH)
+-   Datos laborales (variables PL)
+-   Datos sobre la renta (variables PY)
+
+Se han recogido las siguientes variables:
+
+-   **PB010**: año de la encuesta.
+-   **PB030**: identificación transversal de la persona Se compone del identificador del hogar, **HB030** y el número de orden, a dos dígitos, de la persona dentro del hogar.
+-   **PB040**: factor de ponderación personal transversal (todos los miembros del hogar de 16 años o más).
+-   **PB140**: año de nacimiento (**PB010** - 86 para las personas con 85 o más años, y **PB010** - 85 a **PB010** para el resto de personas).
+-   **PB150**: sexo (1 para varones, 2 para mujeres).
+-   **PB160**: identificación del padre.
+-   **PB160_F**: Valores:
+    -   -2 - El padre no es miembro del hogar o no tiene padre.
+    -   -1 - No consta.
+    -   1 - Variable completada:
+-   **PB170**: identificación de la madre.
+-   **PB170_F**: Toma valores como **PB160_F**.
+-   **PB180**: identificación del cónyuge o pareja.
+-   **PB180_F**: Toma valores como **PB160_F**.
+-   **PB190**: estado civil. Valores:
+    -   1 - Soltero
+    -   2 - Casado
+    -   3 - Separado
+    -   4 - Viudo
+    -   5 - Divorciado
+-   **PB190_F**: -1 si no consta **PB190**, 1 si consta.
+-   **PB200**: cónyuge o pareja de hecho. Valores:
+    -   1 - Sí, con base jurídica
+    -   2 - Sí, sin base jurídica
+    -   3 - No
+-   **PB200_F**: -1 si no consta **PB200**, 1 si consta.

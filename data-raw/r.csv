@@ -1,0 +1,52 @@
+var, type
+RB010, i
+# RB020, c <- always ES
+RB030, i
+RB050, d
+RB050_F, i
+# RB070, i <- Not available from 2021
+# RB070_F, i <- Not available from 2021
+RB080, i
+# RB080_F, i <- Always 1
+# RB081, i <- Only available from 2021
+# RB081_F, i <- Only available from 2021
+# RB082, i <- Only available from 2021
+# RB082_F, i <- Only available from 2021
+RB090, i
+# RB090_F, i <- Always 1
+RB200, i
+# RB200_F, i <- When takes value -1, RB200 is NA
+# RB210 <- Not available from 2021
+# RB210_F <- Not available from 2021
+# RB211 <- Only available from 2021
+# RB211_F <- Only available from 2021
+RB220, i
+RB220_F, i
+RB230, i
+RB230_F, i
+RB240, i
+RB240_F, i
+RB280, i
+RB280_F, i
+RB290, i
+RB290_F, i
+# RL010    <- RLXXX variables are related to childcare
+# RL010_F
+# RL020
+# RL020_F
+# RL030
+# RL030_F
+# RL040
+# RL040_F
+# RL050
+# RL050_F
+# RL060
+# RL060_F
+# RL070
+# RL070_F
+vrLOWJOB, i
+vrEU2020, i
+# vrMATSOCDEP
+# vrLOWJOB_nuevo
+# vrEU2020_nuevo
+# vrEU2030_nuevo
