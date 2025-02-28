@@ -77,7 +77,8 @@ adults <- ecv_p |>
     indiv_id = PB030,
     hh_id = floor(indiv_id / 100),
     adult_factor = PB040,
-    partner = dummy(PB190 == 2 | PB200 %in% 1:2),
+    partner = dummy(PB190 == 2 | PB200 == 1 | PB200 == 2),
+    bad_health = dummy(PH010 == 4 | PH010 == 5),
     country_es = dummy(if_else(ecv_year < 2021, PB210 == 1, RB280 == 1)),
     country_eu = dummy(if_else(ecv_year < 2021, PB210 == 2, RB280 == 2)),
     country_other = dummy(if_else(ecv_year < 2021, PB210 > 2, RB280 > 2)),
@@ -191,7 +192,7 @@ hh_by_age <-
     .groups = "drop")
 
 # Educación de los miembros del hogar
-hh_educ <-
+hh_educ_health <-
   adults |>
   group_by(ecv_year, hh_id) |>
   summarise(
@@ -200,6 +201,7 @@ hh_educ <-
     hh_educ_sec_lo = sum(educ_sec_lo),
     hh_educ_sec_hi = sum(educ_sec_hi),
     hh_educ_sup = sum(educ_sup),
+    hh_bad_health = sum(bad_health),
     .groups = "drop")
 
 # Actividad de los miembros del hogar
@@ -255,7 +257,7 @@ hhincome <- households |>
          hh_size, hh_cunits, hh_type,
          hh_inc, hh_tr, hh_trp) |>
   left_join(hh_house, by = join_by(ecv_year, hh_id)) |>
-  left_join(hh_educ, by = join_by(ecv_year, hh_id)) |>
+  left_join(hh_educ_health, by = join_by(ecv_year, hh_id)) |>
   left_join(hh_by_age, by = join_by(ecv_year, hh_id)) |>
   left_join(hh_head, by = join_by(ecv_year, hh_id)) |>
   left_join(hh_activity, by = join_by(ecv_year, hh_id))
