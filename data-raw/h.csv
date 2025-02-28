@@ -81,9 +81,9 @@ HY030N_F, i
 # HY140G,
 # HY140G_F,
 # # HS010,  <- HSXXX: social exclusion variables
-# HS010_F,
+HS010_F, i
 # HS011,
-# HS011_F,
+HS011_F, i
 # HS020,
 # HS020_F,
 # HS021,
@@ -130,10 +130,10 @@ HY030N_F, i
 # HD080_F,
 # HH010,  <- HHXXX: housing variables
 # HH010_F,
-# HH020,
-# HH020_F,
-# HH021,
-# HH021_F,
+HH020, i
+# HH020_F, i
+HH021, i
+# HH021_F, i
 # HH030,
 # HH030_F,
 # HH031,
