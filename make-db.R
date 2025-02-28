@@ -239,15 +239,20 @@ hh_house <- households |>
 
 # Renta y características de los hogares
 hhincome <- households |>
-  mutate(hh_tr = if_else(HY022_F != 0, HY020 - HY022, 0),
-         hh_trp = if_else(HY022_F != 0, HY020 - HY023, 0),
-         hh_inc = vhRentaa) |>
-  select(ecv_year = DB010,
-         region,
+  mutate(ecv_year = DB010,
          hh_id = DB030,
+         hh_weight = DB090,
          hh_size = HX040,
          hh_cunits = HX240,
-         hh_weight = DB090,
+         hh_type = factor(sprintf('HH_%02d', HX060),
+                          levels = sprintf('HH_%02d', 1:14)),
+         hh_tr = if_else(HY022_F != 0, HY020 - HY022, 0),
+         hh_trp = if_else(HY022_F != 0, HY020 - HY023, 0),
+         hh_inc = vhRentaa,
+         ) |>
+  select(ecv_year, hh_id, hh_weight,
+         region,
+         hh_size, hh_cunits, hh_type,
          hh_inc, hh_tr, hh_trp) |>
   left_join(hh_house, by = join_by(ecv_year, hh_id)) |>
   left_join(hh_educ, by = join_by(ecv_year, hh_id)) |>
