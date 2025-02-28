@@ -44,7 +44,7 @@ individuals <- ecv_r |>
             birth_year = RB080,
             age = ecv_year - birth_year,
             female = dummy(RB090 == 2),
-            low_job = vrLOWJOB,
+            low_job = if_else(vrLOWJOB == 9, NA_integer_, vrLOWJOB),
             eu2020 = vrEU2020)
 
 # Lee los datos de adultos
@@ -77,6 +77,12 @@ adults <- ecv_p |>
     indiv_id = PB030,
     hh_id = floor(indiv_id / 100),
     adult_factor = PB040,
+    indiv_factor = RB050,
+    birth_year = RB080,
+    age = ecv_year - birth_year,
+    female = dummy(RB090 == 2),
+    low_job = if_else(vrLOWJOB == 9, NA_integer_, vrLOWJOB),
+    eu2020 = vrEU2020,
     partner = dummy(PB190 == 2 | PB200 == 1 | PB200 == 2),
     bad_health = dummy(PH010 == 4 | PH010 == 5),
     country_es = dummy(if_else(ecv_year < 2021, PB210 == 1, RB280 == 1)),
@@ -194,6 +200,7 @@ hh_by_age <-
   individuals |>
   group_by(ecv_year, hh_id) |>
   summarise(
+    hh_mean_age = mean(age),
     hh_n_lt5 = sum(age < 5),
     hh_n_5_14 = sum(age >= 5 & age < 15),
     hh_n_ge_65 = sum(age >= 65),
@@ -204,6 +211,7 @@ hh_adult_sums <-
   adults |>
   group_by(ecv_year, hh_id) |>
   summarise(
+    hh_n_female = sum(female),
     hh_educ_none = sum(educ_none),
     hh_educ_prim = sum(educ_prim),
     hh_educ_sec_lo = sum(educ_sec_lo),
@@ -261,9 +269,12 @@ hhincome <- households |>
          hh_tr = if_else(HY022_F != 0, HY020 - HY022, 0),
          hh_trp = if_else(HY022_F != 0, HY020 - HY023, 0),
          hh_inc = vhRentaa,
+         hh_region = region,
+         hh_urb_hi = dummy(DB100 == 1),
+         hh_urb_lo = dummy(DB100 == 3),
          ) |>
   select(ecv_year, hh_id, hh_weight,
-         region,
+         hh_region, hh_urb_hi, hh_urb_lo,
          hh_size, hh_cunits, hh_type,
          hh_inc, hh_tr, hh_trp) |>
   left_join(hh_house, by = join_by(ecv_year, hh_id)) |>
