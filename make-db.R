@@ -218,6 +218,25 @@ hh_activity <-
     hh_total = sum(total) / 12,
     .groups = "drop")
 
+hh_house <- households |>
+  mutate(
+    ecv_year = DB010,
+    hh_id = DB030,
+    hh_house_own = case_when(ecv_year <= 2010 ~ dummy(HH020 == 1),
+                             ecv_year > 2010 ~ dummy(between(HH021, 1, 2))),
+    hh_house_rent = case_when(ecv_year <= 2010 ~ dummy(between(HH020, 2, 3)),
+                              ecv_year > 2010 ~ dummy(between(HH021, 3, 4))),
+    hh_house_free = case_when(ecv_year <= 2010 ~ dummy(HH020 == 4),
+                              ecv_year > 2010 ~ dummy(HH021 == 5)),
+    hh_mortgage = case_when(ecv_year <= 2007 ~
+                              dummy(hh_house_own == 1 & HS010_F != -2),
+                            ecv_year <= 2010 ~
+                              dummy(hh_house_own == 1 & HS011_F != -2),
+                            ecv_year > 2010 ~ dummy(HH021 == 1)),
+  ) |>
+  select(ecv_year, hh_id, hh_house_own, hh_house_rent, hh_house_free,
+         hh_mortgage)
+
 # Renta y características de los hogares
 hhincome <- households |>
   mutate(hh_tr = if_else(HY022_F != 0, HY020 - HY022, 0),
@@ -230,6 +249,7 @@ hhincome <- households |>
          hh_cunits = HX240,
          hh_weight = DB090,
          hh_inc, hh_tr, hh_trp) |>
+  left_join(hh_house, by = join_by(ecv_year, hh_id)) |>
   left_join(hh_educ, by = join_by(ecv_year, hh_id)) |>
   left_join(hh_by_age, by = join_by(ecv_year, hh_id)) |>
   left_join(hh_head, by = join_by(ecv_year, hh_id)) |>
