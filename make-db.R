@@ -97,6 +97,11 @@ adults <- ecv_p |>
     never_worked = if_else(ecv_year < 2021,
                            dummy(PL015 == 2), dummy(PL016 == 1)),
     exper = if_else(never_worked == 1, 0, PL200),
+    white_collar =
+      case_when(ecv_year < 2011 ~ dummy(between(PL050, 10, 39)),
+                ecv_year < 2021 ~ dummy(between(PL051, 10, 39)),
+                ecv_year >= 2021 ~
+                  dummy(between(coalesce(PL051A, PL051B), 10, 39))),
   )
 
 # Actividad principal por meses (hasta 2008 / desde 2009):
@@ -206,6 +211,7 @@ hh_adult_sums <-
     hh_educ_sup = sum(educ_sup),
     hh_bad_health = sum(bad_health),
     hh_never_worked = sum(never_worked),
+    hh_white_collar = sum(white_collar),
     .groups = "drop")
 
 # Actividad de los miembros del hogar
