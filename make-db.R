@@ -94,6 +94,9 @@ adults <- ecv_p |>
     educ_sec_lo = dummy(educ == 2),
     educ_sec_hi = dummy(educ == 3 | educ == 4),
     educ_sup = dummy(educ == 5),
+    never_worked = if_else(ecv_year < 2021,
+                           dummy(PL015 == 2), dummy(PL016 == 1)),
+    exper = if_else(never_worked == 1, 0, PL200),
   )
 
 # Actividad principal por meses (hasta 2008 / desde 2009):
@@ -192,7 +195,7 @@ hh_by_age <-
     .groups = "drop")
 
 # Educación de los miembros del hogar
-hh_educ_health <-
+hh_adult_sums <-
   adults |>
   group_by(ecv_year, hh_id) |>
   summarise(
@@ -202,6 +205,7 @@ hh_educ_health <-
     hh_educ_sec_hi = sum(educ_sec_hi),
     hh_educ_sup = sum(educ_sup),
     hh_bad_health = sum(bad_health),
+    hh_never_worked = sum(never_worked),
     .groups = "drop")
 
 # Actividad de los miembros del hogar
@@ -257,7 +261,7 @@ hhincome <- households |>
          hh_size, hh_cunits, hh_type,
          hh_inc, hh_tr, hh_trp) |>
   left_join(hh_house, by = join_by(ecv_year, hh_id)) |>
-  left_join(hh_educ_health, by = join_by(ecv_year, hh_id)) |>
+  left_join(hh_adult_sums, by = join_by(ecv_year, hh_id)) |>
   left_join(hh_by_age, by = join_by(ecv_year, hh_id)) |>
   left_join(hh_head, by = join_by(ecv_year, hh_id)) |>
   left_join(hh_activity, by = join_by(ecv_year, hh_id))
