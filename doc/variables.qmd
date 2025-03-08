@@ -1,0 +1,172 @@
+---
+title: "Variables"
+
+lang: es
+execute: 
+  echo: false
+
+format: 
+  html:
+    toc: true
+    number-sections: true
+    embed-resources: true
+    theme: cosmo
+---
+
+Los datos se han obtenido de la Encuesta de Condiciones de Vida, ECV. El Instituto Nacional de Estadística, INE, difunde libremente los microdatos de la ECV, permitiendo el acceso abierto a esta información para su análisis y estudio. La encuesta se encuentra disponible desde el año 2004 hasta el 2024.
+
+Las variables que comienzan por '**head\_**' se refieren a la persona de referencia del hogar. Las variables que empiezan por '**hh\_**' se refieren a la hogar en su conjunto, incluyendo a la persona de referencia. Usualmente son el número de miembros del hogar que cumplen una determinada condición.
+
+# Identificación del hogar y de su responsable
+
+-   **ecv_year**: año de la encuesta. *Los datos se refieren al año anterior* al que se realiza la encuesta.
+-   **hh_region**: Comunidad autónoma de residencia. Valores:
+    -   *GAL*: Galicia
+    -   *AST*: Principado de Asturias
+    -   *CNT*: Cantabria
+    -   *PVA*: País Vasco
+    -   *NAV*: Comunidad Foral de Navarra
+    -   *RIO*: La Rioja
+    -   *ARA*: Aragón
+    -   *MAD*: Comunidad de Madrid
+    -   *CYL*: Castilla y León
+    -   *CLM*: Castilla-La Mancha
+    -   *EXT*: Extremadura
+    -   *CAT*: Cataluña
+    -   *VAL*: Comunidad Valenciana
+    -   *BAL*: Islas Baleares
+    -   *AND*: Andalucía
+    -   *MUR*: Región de Murcia
+    -   *CEU*: Ciudad Autónoma de Ceuta
+    -   *MEL*: Ciudad Autónoma de Melilla
+    -   *CNR*: Canarias
+-   **hh_urb_hi**, **hh_urb_lo**: variables ficticias que indican si la residencia del hogar se encuentra en una zona altamente poblada (**hh_urb_hi** es 1) o en una zona poco poblada (**hh_urb_lo** es 1). La categoría de referencia (**hh_urb_hi** es 0 y **hh_urb_lo** es 0) corresponde a un zona con densidad de población media.
+
+Las siguientes variables no creo que sean de utilidad directa.
+
+-   **hh_id**: identificador del hogar. Hogares diferentes pueden tener el mismo valor de esta variable en diferentes años. Una familia se identifica por los valores de **ecv_year** y **hh_id** conjuntamente.
+-   **head_id**: identificador del responsable del hogar. El responsable de un hogar queda identificado por los valores de **ecv_year** y **hh_id** conjuntamente.
+-   **hh_weight**, **head_indiv_factor**: factores de elevación poblacional para el hogar y para el responsable de la familia.
+
+# Variables demográficas
+
+Referidas al hogar:
+
+-   **hh_size**: número de miembros del hogar.
+-   **hh_cunits**: número de unidades de consumo. Se usa la escala de equivalencia de la OCDE modificada: $$
+    \begin{multline}
+    \text{Unidades de consumo} = 1 + 0.5\, (\text{Número de mayores de 13 años - 1}) \\ + 0.3\, (\text{Número de menores de 13 años}).
+    \end{multline}
+    $$
+-   **hh_n_female**: número de mujeres en el hogar.
+-   **hh_mean_age**: edad media de los miembros del hogar.
+-   **hh_n_lt5**: número de niños con menos de 5 años.
+-   **hh_n_5_14**: número de niños entre 5 y 14 años.
+-   **hh_n_ge_65**: número de miembros con 65 o más años.
+-   **hh_type**: tipo del hogar. Posibles valores:
+    -   *HH_01*: Una persona: hombre de menos de 30 años
+    -   *HH_02*: Una persona: hombre de entre 30 y 64 años
+    -   *HH_03*: Una persona: hombre de 65 o más años
+    -   *HH_04*: Una persona: mujer de menos de 30 años
+    -   *HH_05*: Una persona: mujer de entre 30 y 64 años
+    -   *HH_06*: Una persona: mujer de 65 o más años
+    -   *HH_07*: 2 adultos sin niños dependientes económicamente, al menos una persona de 65 o más años
+    -   *HH_08*: 2 adultos sin niños dependientes económicamente, teniendo ambos menos de 65 años
+    -   *HH_09*: Otros hogares sin niños dependientes económicamente
+    -   *HH_10*: Un adulto con al menos un niño dependiente
+    -   *HH_11*: Dos adultos con un niño dependiente
+    -   *HH_12*: Dos adultos con dos niños dependientes
+    -   *HH_13*: Dos adultos con tres o más niños dependientes
+    -   *HH_14*: Otros hogares con niños dependientes
+
+Referidas al responsable del hogar:
+
+-   **head_birth_year**: año de nacimiento.
+-   **head_age**: edad.
+-   **head_female**: variable ficticia, toma el valor 1 si es mujer.
+-   **head_partner**: variable ficticia, toma el valor 1 si convive con su pareja (matrimonio o pareja de hecho).
+-   **head_country_es**: variable ficticia, toma el valor 1 si el país de nacimiento es España.
+-   **head_country_eu**: variable ficticia, toma el valor 1 si el nace en otro país de la Unión Europea.
+-   **head_country_other**: variable ficticia, toma el valor 1 si nace fuera de la Unión Europea.
+-   **head_nation_es**: variable ficticia, toma el valor 1 si es de nacionalidad española.
+-   **head_nation_eu**: variable ficticia, toma el valor 1 si la nacionalidad es de otro país de la Unión Europea.
+-   **head_nation_other**: variable ficticia, toma el valor 1 si la nacionalidad corresponde a países que no pertenecen a la Unión Europea.
+
+# Vivienda
+
+-   **hh_house_own**: variable ficticia, toma el valor 1 si la vivienda es propiedad del hogar.
+-   **hh_house_rent**: variable ficticia, toma el valor 1 si la vivienda es alquilada.
+-   **hh_house_free**: variable ficticia, toma el valor 1 si la vivienda es cedida gratuitamente al hogar.
+-   **hh_mortgage**: variable ficticia, toma el valor 1 si la vivienda es propiedad del hogar y está hipotecada.
+
+# Salud
+
+-   **head_bad_health**: variable ficticia, toma el valor 1 si el responsable del hogar declara tener mala o muy mala salud.
+-   **hh_bad_health**: número de adultos del hogar que declaran tener mala o muy mala salud.
+
+# Educación
+
+Variables ficticias que indican el nivel educativo conseguido por el responsable del hogar:
+
+-   **head_educ_none**: valor 1 si no completa educación primaria.
+-   **head_educ_prim**: valor 1 si completa primaria.
+-   **head_educ_sec_lo**: valor 1 si completa primer ciclo de secundaria.
+-   **head_educ_sec_hi**: valor 1 si completa el segundo ciclo de secundaria.
+-   **head_educ_sup**: valor 1 si completa educación superior.
+
+Educación completada por los adultos del hogar:
+
+-   **hh_educ_none**: número de adultos que no completan educación primaria.
+-   **hh_educ_prim**: número de adultos que completan primaria.
+-   **hh_educ_sec_lo**: número de adultos que completan primer ciclo de secundaria.
+-   **hh_educ_sec_hi**: número de adultos que completan el segundo ciclo de secundaria.
+-   **hh_educ_sup**: número de adultos que completan educación superior.
+
+# Situación laboral
+
+Variables del responsable del hogar. Las variables que expresan una fracción del año toman valores: 0, 1/12, 2/12, ..., 1.
+
+-   **head_white_collar**: variable ficticia, valor 1 si ocupación de cuello blanco.
+-   **head_never_worked**: variable ficticia, valor 1 si no ha trabajado nunca.
+-   **head_exper**: años de experiencia laboral.
+-   **head_wage_full**: fracción del año como asalariado a tiempo completo.
+-   **head_wage_part**: fracción del año como asalariado a tiempo parcial.
+-   **head_self_full**: fracción del año como autónomo a tiempo completo.
+-   **head_self_part**: fracción del año como autónomo a tiempo parcial.
+-   **head_unem**: fracción del año como desempleado.
+-   **head_retired**: fracción del año como jubilado.
+-   **head_other_inactive**: fracción del año en otra situación de inactividad distinta a la jubilación.
+
+Variables de los adultos del hogar.
+
+-   **hh_white_collar**: número de adultos con ocupación de cuello blanco.
+-   **hh_never_worked**: número de adultos que nunca han trabajado.
+-   **hh_wage_full**: suma de las fracciones de año que los adultos trabajaron como asalariados a tiempo completo.
+-   **hh_wage_part**: suma de las fracciones de año que los adultos trabajaron como asalariados a tiempo parcial.
+-   **hh_self_full**: suma de las fracciones de año que los adultos trabajaron como autónomos a tiempo completo.
+-   **hh_self_part**: suma de las fracciones de año que los adultos trabajaron como autónomos a tiempo parcial.
+-   **hh_unem**: suma de las fracciones de año que los adultos estuvieron desempleados.
+-   **hh_retired**: suma de las fracciones de año que los adultos estuvieron jubilados.
+-   **hh_other_inactive**: suma de las fracciones de año que los adultos estuvieron en otra situación de inactividad distinta a la jubilación.
+
+# Renta y pobreza
+
+-   **hh_inc**: Renta disponible total del hogar en el año anterior al de la entrevista.
+-   **hh_tr**: Transferencias recibidas por el hogar excepto pensiones de jubilación y supervivencia.
+-   **hh_trp**: Transferencias recibidas por el hogar.
+-   **hh_arope**: variable ficticia, toma el valor 1 para hogares en riesgo de pobreza. Umbral de pobreza: es el 60% de la mediana de los ingresos anuales por unidad de consumo (escala OCDE modificada), tomando la distribución de personas.
+-   **hh_matdep**: Hogar en carencia material severa. Son los hogares con carencia en al menos cuatro conceptos de una lista de nueve. Los conceptos considerados son:
+    1)  No puede permitirse ir de vacaciones al menos una semana al año.
+    2)  No puede permitirse una comida de carne, pollo o pescado al menos cada dos días.
+    3)  No puede permitirse mantener la vivienda con una temperatura adecuada.
+    4)  No tiene capacidad para afrontar gastos imprevistos.
+    5)  Ha tenido retrasos en el pago de gastos relacionados con la vivienda principal (hipoteca o alquiler, recibos de gas, comunidad...) o en compras a plazos en los últimos 12 meses.
+    6)  No puede permitirse disponer de un automóvil.
+    7)  No puede permitirse disponer de teléfono.
+    8)  No puede permitirse disponer de un televisor en color.
+    9)  No puede permitirse disponer de una lavadora.
+-   **hh_low_job**: variable ficticia, toma el valor 1 para los hogares en los que sus miembros en edad de trabajar (personas de 18 a 59 años, excluyendo los estudiantes de 18 a 24 años) lo hicieron menos del 20% del total de su potencial de trabajo durante el año anterior al de la entrevista (periodo de referencia de los ingresos). Se calcula por una parte el número de meses en los que los miembros del hogar han estado trabajando durante el año de referencia y, por otra parte, el total de meses en los que teóricamente esos mismos miembros podrían haber trabajado. Se calcula el ratio y se determina si es inferior a 20%. Esta variable no se aplica en el caso de las personas de 60 y más años.
+-   **hh_eu2020**: variable ficticia, valor 1 para los hogares que están en alguna de estas situaciones:
+    -   en riesgo de pobreza (60% mediana de los ingresos por unidad de consumo).
+    -   en carencia material severa (con carencia en al menos 4 de una lista de 9 conceptos).
+    -   en hogares sin empleo o con baja intensidad en el empleo (los miembros en edad de trabajar lo hicieron menos del 20% del total de su potencial de trabajo durante el año de referencia).
