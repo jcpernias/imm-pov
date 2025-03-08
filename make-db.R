@@ -172,10 +172,9 @@ activity <- ecv_p |>
             retired = sum(if_else(ecv_year < 2009,
                                   code == 6, code == 7),
                           na.rm = TRUE),
-            inactive = sum(if_else(ecv_year < 2009,
-                                   code %in% 7:9, code %in% c(6, 8:11)),
+            other_inactive = sum(if_else(ecv_year < 2009,
+                                         code %in% 7:9, code %in% c(6, 8:11)),
                            na.rm = TRUE),
-            total = sum(!is.na(code)),
             .groups = "drop")
 
 # Identifica el responsable de cada familia
@@ -190,9 +189,8 @@ hh_head <- households |>
     self_part = self_part / 12,
     unem = unem / 12,
     retired = retired / 12,
-    inactive = inactive / 12,
-    total = total / 12) |>
-  select(-adult_factor) |>
+    other_inactive = other_inactive / 12) |>
+  select(-c(adult_factor, educ)) |>
   rename_with(\(x) paste0("head_", x), -c(ecv_year:head_id))
 
 # Miembros de los hogares
@@ -234,8 +232,7 @@ hh_activity <-
     hh_self_part = sum(self_part) / 12,
     hh_unem = sum(unem) / 12,
     hh_retired = sum(retired) / 12,
-    hh_inactive = sum(inactive) / 12,
-    hh_total = sum(total) / 12,
+    hh_other_inactive = sum(other_inactive) / 12,
     .groups = "drop")
 
 hh_house <- households |>
@@ -269,6 +266,8 @@ hhincome <- households |>
          hh_tr = if_else(HY022_F != 0, HY020 - HY022, 0),
          hh_trp = if_else(HY022_F != 0, HY020 - HY023, 0),
          hh_inc = vhRentaa,
+         hh_arope = vhPobreza,
+         hh_matdep = vhMATDEP,
          hh_region = region,
          hh_urb_hi = dummy(DB100 == 1),
          hh_urb_lo = dummy(DB100 == 3),
@@ -276,13 +275,17 @@ hhincome <- households |>
   select(ecv_year, hh_id, hh_weight,
          hh_region, hh_urb_hi, hh_urb_lo,
          hh_size, hh_cunits, hh_type,
-         hh_inc, hh_tr, hh_trp) |>
+         hh_inc, hh_tr, hh_trp, hh_arope, hh_matdep) |>
   left_join(hh_house, by = join_by(ecv_year, hh_id)) |>
   left_join(hh_adult_sums, by = join_by(ecv_year, hh_id)) |>
   left_join(hh_by_age, by = join_by(ecv_year, hh_id)) |>
   left_join(hh_head, by = join_by(ecv_year, hh_id)) |>
-  left_join(hh_activity, by = join_by(ecv_year, hh_id))
+  left_join(hh_activity, by = join_by(ecv_year, hh_id)) |>
+  rename(hh_low_job = head_low_job, hh_eu2020 = head_eu2020)
 
 
 # Guarda la base de datos
 save(hhincome, file = "data/hhincome.Rdata", compress = "xz")
+
+library(openxlsx2)
+write_xlsx(filter(hhincome, ecv_year == 2024), "data/ecv-2024.xlsx", na.strings = "")
