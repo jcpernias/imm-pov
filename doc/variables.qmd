@@ -11,6 +11,13 @@ format:
     number-sections: true
     embed-resources: true
     theme: cosmo
+  pdf:
+    papersize: a4
+    documentclass: article
+    number-sections: true
+    colorlinks: true
+    pdf-engine: pdflatex
+    fontfamily: kpfonts
 ---
 
 Los datos se han obtenido de la Encuesta de Condiciones de Vida, ECV. El Instituto Nacional de Estadística, INE, difunde libremente los microdatos de la ECV, permitiendo el acceso abierto a esta información para su análisis y estudio. La encuesta se encuentra disponible desde el año 2004 hasta el 2024.
@@ -54,9 +61,9 @@ Referidas al hogar:
 
 -   **hh_size**: número de miembros del hogar.
 -   **hh_cunits**: número de unidades de consumo. Se usa la escala de equivalencia de la OCDE modificada: $$
-    \begin{multline}
+    \begin{split}
     \text{Unidades de consumo} = 1 + 0.5\, (\text{Número de mayores de 13 años - 1}) \\ + 0.3\, (\text{Número de menores de 13 años}).
-    \end{multline}
+    \end{split}
     $$
 -   **hh_n_female**: número de mujeres en el hogar.
 -   **hh_mean_age**: edad media de los miembros del hogar.
@@ -124,7 +131,7 @@ Educación completada por los adultos del hogar:
 
 # Situación laboral
 
-Variables del responsable del hogar. Las variables que expresan una fracción del año toman valores: 0, 1/12, 2/12, ..., 1.
+Variables del responsable del hogar. Las variables que expresan una fracción del año toman valores: $0, 1/12, 2/12, \dots, 1$.
 
 -   **head_white_collar**: variable ficticia, valor 1 si ocupación de cuello blanco.
 -   **head_never_worked**: variable ficticia, valor 1 si no ha trabajado nunca.
