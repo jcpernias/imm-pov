@@ -59,7 +59,7 @@ Evolución temporal de la renta disponible media.
 ```{r}
 yd_mean |> 
   ggplot(aes(x = ecv_year, y = inc_cu)) +
-  geom_line(color="steelblue") +
+  geom_line(color = "steelblue") +
   geom_point() +
   xlab("")
 ```
@@ -82,7 +82,7 @@ Evolución temporal umbral de pobreza.
 ```{r}
 pov_line_table |> 
   ggplot(aes(x = ecv_year, y = pov_line)) +
-  geom_line(color="steelblue") +
+  geom_line(color = "steelblue") +
   geom_point() +
   xlab("")
 ```
