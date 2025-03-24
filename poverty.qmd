@@ -32,7 +32,8 @@ Construye la base de datos con la renta disponible per capita.
 
 ```{r}
 hhincome <- hhincome |> 
-  mutate(inc_cu = hh_inc / hh_cunits)
+  mutate(inc_cu = hh_inc / hh_cunits,
+         inc_pc = hh_inc / hh_size)
 ```
 
 # Indicadores
@@ -116,4 +117,14 @@ fgt_tab |>
   geom_line() + geom_point() + 
   ylab("") + xlab("") +
   facet_wrap(~ Measures, ncol = 1, scales = "free_y")
+```
+
+# Deciles de renta por persona
+
+```{r}
+deciles_table <- 
+  svyby(~ inc_pc, ~ ecv_year, svy, svyquantile, (0:10)/10, 
+        na.rm = TRUE) |> 
+  as_tibble() |> 
+  select(-starts_with("se."))
 ```
