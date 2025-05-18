@@ -126,4 +126,6 @@ deciles_table <-
         na.rm = TRUE) |> 
   as_tibble() |> 
   select(-starts_with("se."))
+
+deciles_table
 ```
