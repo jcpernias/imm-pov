@@ -287,11 +287,11 @@ hhincome <- households |>
 # Guarda la base de datos
 save(hhincome, file = "data/hhincome.Rdata", compress = "xz")
 
-library(openxlsx2)
+library(writexl)
 
 save_ecv_excel <- function(year) {
   fname <- paste0("data/ecv-", year, ".xlsx")
-  write_xlsx(filter(hhincome, ecv_year == year), fname, na.strings = "")
+  write_xlsx(filter(hhincome, ecv_year == year), path = fname)
 }
 
 walk(2004:2024, save_ecv_excel)
